@@ -7,7 +7,7 @@ class Column(EmbeddedDocument):
     value = StringField()
 
 class FoodItem(Document):
-    uuid = UUIDField(default=uuid.uuid4, unique=True, required=True)
+    food_id = UUIDField(default=uuid.uuid4, unique=True, required=True)
     user_id = UUIDField(required=True)
     name = StringField(required=True)
     date_created = DateTimeField(default=datetime.now)

@@ -1,6 +1,7 @@
 
 import logging
-from flask import make_response
+from uuid import UUID
+from flask import make_response, request
 from mongoengine.errors import FieldDoesNotExist
 from errors.validation_errors import InvalidJSON, InvalidJSONField, ValidationError
 
@@ -8,7 +9,8 @@ from models.food import FoodItem
 
 logger = logging.getLogger(__name__)
 
-def validate_food_item(request):
+def validate_food_item(request: request, user_id: UUID) -> FoodItem:
+
     if request.is_json is False:
         raise InvalidJSON('Request body is not JSON.')
     else:
@@ -20,5 +22,6 @@ def validate_food_item(request):
             raise InvalidJSONField('Invalid "column" field in JSON data.')
 
     food_time = FoodItem(**data)
+    food_time.user_id = user_id
     logger.debug(f'Validated food item: {food_time}')
     return food_time
